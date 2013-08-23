@@ -12,6 +12,11 @@
   <ItemGroup>
     <ClCompile Include="kmain.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arm.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="rpi.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3D779CE6-A610-49F7-AC07-992AEEB4115D}</ProjectGuid>
     <RootNamespace>kernel</RootNamespace>
