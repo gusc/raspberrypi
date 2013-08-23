@@ -1,0 +1,11 @@
+*.user
+*.filter
+*.o
+*.opensdf
+/*.suo
+/*.sdf
+/Release
+*/Release
+/ipch
+/doc
+/Logs
