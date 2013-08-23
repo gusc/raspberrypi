@@ -27,8 +27,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ExecutablePath>
-    </ExecutablePath>
+    <ExecutablePath>$(PATH)</ExecutablePath>
     <NMakeBuildCommandLine>make.exe -C "$(ProjectDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>$(NMakeBuildCommandLine)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del *.o "..\Release\kernel.img"</NMakeCleanCommandLine>

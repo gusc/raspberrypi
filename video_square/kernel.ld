@@ -1,4 +1,3 @@
-OUTPUT_FORMAT(binary)
 SECTIONS {
 	.init 0x8000 : {
 		*(.init)
