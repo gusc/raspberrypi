@@ -1,7 +1,7 @@
-RaspberyPi Bare Metal Tests
+RaspberryPi Bare Metal Tests
 ===========================
 
-This is my take on Raspbery Pi Bare Metal programming
+This is my take on Raspberry Pi Bare Metal programming
 
 video_square
 ------------
