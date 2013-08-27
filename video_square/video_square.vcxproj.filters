@@ -37,5 +37,8 @@
     <ClInclude Include="mailbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

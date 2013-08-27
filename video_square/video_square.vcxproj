@@ -15,6 +15,7 @@
   <ItemGroup>
     <ClInclude Include="arm.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="fb.h" />
     <ClInclude Include="mailbox.h" />
     <ClInclude Include="rpi.h" />
   </ItemGroup>
