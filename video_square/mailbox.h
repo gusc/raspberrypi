@@ -1,8 +1,10 @@
 /*
 
-Entry point
-===========
-With ARM it's so much easier to jump from boot to C (like a boss!)
+Raspbery PI mailbox functions
+=============================
+
+mailbox_read - read from VC mailbox
+mailbox_write - write to VC mailbox
 
 License (BSD-2)
 ===============
@@ -33,13 +35,48 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-.section .init
-.globl _start
-.extern kmain
+#ifndef __mailbox_h
+#define __mailbox_h
 
-_start:
-	mov sp, #0x8000
-    bl kmain		@ like a boss!
+#include "common.h"
+#include "rpi.h"
 
-_hang:
-	b _hang
+/**
+* Write to VC mailbox
+* @param channel - mailbox channel
+* @param data - data to write
+*/
+static INLINE void mailbox_write(uint8 channel, uint32 data){
+	volatile uint32 *status = (uint32 *)(PERIPHERAL_BASE + MAIL_BASE + MAIL_STATUS);
+	volatile uint32 *mbox = (uint32 *)(PERIPHERAL_BASE + MAIL_BASE + MAIL_WRITE);
+	// Wait until mailbox is NOT full
+	while (((*status) & MAIL_FULL) != 0){}
+	// Write data into mailbox
+	(*mbox) = (data & (~0xF)) | channel;
+}
+
+/**
+* Read from VC mailbox
+* @param channel - mailbox channel
+* @return data retrieved from mailbox
+*/
+static INLINE uint32 mailbox_read(uint8 channel){
+	volatile uint32 *status = (uint32 *)(PERIPHERAL_BASE + MAIL_BASE + MAIL_STATUS);
+	volatile uint32 *mbox = (uint32 *)(PERIPHERAL_BASE + MAIL_BASE + MAIL_READ);
+	uint32 data = 0;
+	uint8 in_channel = 0;
+	// Wait for data from requested channel (everything else will be discarded)
+	for (;;){
+		// Wait until mailbox is NOT empty
+		while (((*status) & MAIL_FULL) != 0){}
+		// Read data
+		data = (*mbox);
+		in_channel = (uint8)(data & 0xF);
+		if (in_channel == channel){
+			return (data & (~channel));
+		}
+	}
+	return 0;
+}
+
+#endif

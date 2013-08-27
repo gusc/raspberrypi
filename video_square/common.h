@@ -40,14 +40,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __common_h
 #define __common_h
 
-#define __NOINLINE  __attribute__((noinline))
-#define __INLINE	__attribute__((always_inline))
-#define __REGPARM   __attribute__((regparm(3)))
-#define __NORETURN  __attribute__((noreturn))
-#define __PACKED	__attribute__((packed))
-#define __ALIGN(x)	__attribute__((aligned(x)))
+#if defined _MSC_VER
+#define __attribute__(x)
+#endif
+
+#define NOINLINE  __attribute__((noinline))
+#define INLINE	__attribute__((always_inline))
+#define REGPARM   __attribute__((regparm(3)))
+#define NORETURN  __attribute__((noreturn))
+#define PACKED	__attribute__((packed))
+#define ALIGN(x)	__attribute__((aligned(x)))
 // type = IRQ, FIQ, SWI, ABORT and UNDEF.
-#define __INTERRUPT(type)	__attribute__((interrupt(type)))
+#define INTERRUPT(type)	__attribute__((interrupt(type)))
 
 #define HANG() while(true){}
 

@@ -35,7 +35,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common.h"
 #include "rpi.h"
 #include "arm.h"
+#include "mailbox.h"
+
+typedef struct {
+	uint32 width;		// Frame Buffer Pixel Width
+	uint32 heigth;		// Frame Buffer Pixel Height
+	uint32 v_width;		// Frame Buffer Virtual Pixel Width
+	uint32 v_height;	// Frame Buffer Virtual Pixel Height
+	uint32 pitch;		// Frame Buffer Pitch (Set By GPU)
+	uint32 bpp;			// Frame Buffer Bits Per Pixel
+	uint32 off_x;		// Frame Buffer Offset In X Direction
+	uint32 off_y;		// Frame Buffer Offset In Y Direction
+	uint32 fb_ptr;		// Frame Buffer Address (Set By GPU)
+	uint32 fb_size;		// Frame Buffer Size (Set By GPU)
+} PACKED fb_info_t;
+
+fb_info_t fb_info ALIGN(16) = {640, 480, 640, 480, 0, 32, 0, 0, 0, 0};
 
 void kmain(void){
-
+	uint32 fb_info_addr = (((uint32)(&fb_info)) + BUS_ADDRESSES_l2CACHE_DISABLED);
+	uint32 fb_ok = 0;
+	uint32 i;
+	uint32 b;
+	// Initialize frame buffer
+	while (fb_info.fb_ptr == 0){
+		mailbox_write(MAIL_FB, fb_info_addr);
+		fb_ok = mailbox_read(MAIL_FB) - BUS_ADDRESSES_l2CACHE_DISABLED;
+	}
+	b = fb_info.fb_size / 4;
+	for (i = 0; i < b; i ++){
+		// Color bytes go as folows: Alpha, Blue, Green, Red, which becomes RGBA in little endian order
+		((uint32 *)fb_info.fb_ptr)[i] = 0xFFFFFFFF;
+	}
 }
+

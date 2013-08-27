@@ -3,6 +3,8 @@
 ARM assembly routines
 =====================
 
+Memory barriers and cache control
+
 License (BSD-2)
 ===============
 

@@ -40,8 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Bus Address
 #define PERIPHERAL_BASE                 0x20000000 // Peripheral Base Address
-#define BUS_ADDRESSES_l2CACHE_ENABLED   0x40000000 // Bus Addresses: disable_l2cache0
-#define BUS_ADDRESSES_l2CACHE_DISABLED  0xC0000000 // Bus Addresses: disable_l2cache1
+#define BUS_ADDRESSES_l2CACHE_ENABLED   0x40000000 // Bus Addresses: disable_l2cache=0
+#define BUS_ADDRESSES_l2CACHE_DISABLED  0xC0000000 // Bus Addresses: disable_l2cache=1
 
 // Mailbox
 #define MAIL_BASE    0xB880 // Mailbox Base Address
@@ -61,7 +61,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define MAIL_BUTTONS  0x5 // Mailbox Channel 5: Buttons Interface
 #define MAIL_TOUCH    0x6 // Mailbox Channel 6: Touchscreen Interface
 #define MAIL_COUNT    0x7 // Mailbox Channel 7: Counter
-#define MAIL_TAGS     0x8 // Mailbox Channel 8: Tags (ARM to VC)
+#define MAIL_TAGS_OUT 0x8 // Mailbox Channel 8: Tags (ARM to VC)
+#define MAIL_TAGS_IN  0x9 // Mailbox Channel 9: Tags (VC to ARM)
 
 // Tags (ARM to VC)
 #define Get_Firmware_Revision  0x00000001 // VideoCore: Get Firmware Revision (Response: Firmware Revision)
