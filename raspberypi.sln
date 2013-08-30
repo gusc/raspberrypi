@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bbp", "video_fb\video_fb.vcxproj", "{3D779CE6-A610-49F7-AC07-992AEEB4115D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_fb", "video_fb\video_fb.vcxproj", "{3D779CE6-A610-49F7-AC07-992AEEB4115D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

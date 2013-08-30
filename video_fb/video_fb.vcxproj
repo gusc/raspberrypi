@@ -21,8 +21,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3D779CE6-A610-49F7-AC07-992AEEB4115D}</ProjectGuid>
-    <RootNamespace>kernel</RootNamespace>
-    <ProjectName>video_square</ProjectName>
+    <RootNamespace>video_fb</RootNamespace>
+    <ProjectName>video_fb</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
