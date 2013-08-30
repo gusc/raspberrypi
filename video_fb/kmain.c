@@ -3,6 +3,8 @@
 Main programm
 =============
 
+Frame Buffer access demo
+
 License (BSD-2)
 ===============
 
@@ -38,6 +40,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "mailbox.h"
 #include "fb.h"
 
+#define SCREEN_W 640
+#define SCREEN_H 480
+#define SCREEN_BPP 32	// 32bits per pixel, each pixel can be accessed as uint32
+
+// Frame buffer info structure
 typedef struct {
 	uint32 width;		// Frame Buffer Pixel Width
 	uint32 heigth;		// Frame Buffer Pixel Height
@@ -51,22 +58,35 @@ typedef struct {
 	uint32 fb_size;		// Frame Buffer Size (Set By GPU)
 } PACKED fb_info_t;
 
-fb_info_t fb_info ALIGN(16) = {640, 480, 640, 480, 0, 32, 0, 0, 0, 0};
+fb_info_t fb_info ALIGN(16) = {SCREEN_W, SCREEN_H, SCREEN_W, SCREEN_H, 0, SCREEN_BPP, 0, 0, 0, 0};
 
 void kmain(void){
 	uint32 fb_info_addr = (((uint32)(&fb_info)) + BUS_ADDRESSES_l2CACHE_DISABLED);
 	uint32 fb_ok = 0;
-	uint32 i;
-	uint32 b;
+	uint32 px;
+	uint32 x;
+	uint32 y;
+	uint32 *fb;
+	
 	// Initialize frame buffer
 	while (fb_info.fb_ptr == 0){
 		mailbox_write(MAIL_FB, fb_info_addr);
 		fb_ok = mailbox_read(MAIL_FB) - BUS_ADDRESSES_l2CACHE_DISABLED;
 	}
-	b = fb_info.fb_size / 4;
-	for (i = 0; i < b; i ++){
+	fb = (uint32 *)fb_info.fb_ptr;
+	
+	// Fill whole screen with one color
+	for (x = 0; x < SCREEN_W; x ++){
+		for (y = 0; y < SCREEN_H; y ++){
+			// Access each pixel by it's x and y coordinates
+			fb[x + (y * SCREEN_W)] = RGB32(0xFF,0xFF,0xFF);
+		}
+	}
+	
+	// Fill half of the screen accessing a pixel in a row
+	px = fb_info.fb_size / 4; // Get total number of pixels in buffer (each pixel is 32bits, 4bytes)
+	for (x = 153600; x < px; x ++){
 		// Color bytes go as folows: Alpha, Blue, Green, Red, which becomes RGBA in little endian order
-		((uint32 *)fb_info.fb_ptr)[i] = RGB32(0xFF,0xFF,0xFF);
+		fb[x] = RGB32(0xFF,0x00,0x00);
 	}
 }
-
