@@ -1,12 +1,8 @@
 /*
 
-Common data types
-=================
+MMU Page manager
+================
 
-This file contains type definitions and helper structures.
-
-The idea of this file is to keep a precise control over data type sizes, so 
-instead of int and long, we should have int32 or int64.
 
 License (BSD-2)
 ===============
@@ -36,52 +32,52 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
+#include "common.h"
+#include "config.h"
+#include "pages.h"
 
-#ifndef __common_h
-#define __common_h
-
-#if defined _MSC_VER
-#define __attribute__(x)
-#endif
-
-#define NOINLINE		__attribute__((noinline))
-#define INLINE			__attribute__((always_inline))
-#define REGPARM			__attribute__((regparm(3)))
-#define NORETURN		__attribute__((noreturn))
-#define PACKED			__attribute__((packed))
-#define ALIGN(x)		__attribute__((aligned(x)))
-// type = IRQ, FIQ, SWI, ABORT and UNDEF.
-#define INTERRUPT(type)	__attribute__((interrupt(type)))
-
-#define HANG() while(true){}
-
-// Default types
-typedef unsigned char	uchar;
-
-typedef unsigned char	uint8;
-typedef unsigned short	uint16;
-typedef unsigned int	uint32;
-typedef unsigned long long uint64;
-
-typedef char			int8;
-typedef short			int16;
-typedef int				int32;
-typedef long long		int64;
-
-#define null 0
-#define true 1
-#define false 0
-#define bool uint64
-
-// Variadic funciton arguments
-#define va_list			__builtin_va_list
-#define va_start(v, f)	__builtin_va_start(v, f)
-#define va_end(v)		__builtin_va_end(v)
-#define va_arg(v, a)	__builtin_va_arg(v, a)
-
+/**
+* Translation table base
+*/
 typedef struct {
-	uint32 low;
-	uint32 high;
-} split_uint64_t;
+	uint32 addr	:16;
+} PACKED page_ttbr_t;
+/**
+* First-level descriptor entry
+* for coarse tables
+*/
+typedef union {
+	struct {
+		uint32 type			:2;		// Descriptor type (always=1)
+		uint32 sbz			:3;		// Should be 0
+		uint32 domain		:4;		// Domain
+		uint32 ecc			:1;		// ECC enabled
+		uint32 coarse_base	:22;	// Coarse page table base address
+	} bits;
+	uint32 val;
+} PACKED page_fld_t;
+/**
+* Second-level descriptor entry
+* for small pages (4KB)
+*/
+typedef struct {
+	struct {
+		uint32 xn			:1;		// Disable code execution from this page
+		uint32 sbo			:1;		// Should be 1
+		uint32 buffered		:1;		// Can this page be buffered
+		uint32 cached		:1;		// Can this page be cached
+		uint32 ap			:2;		// Access permission bits
+		uint32 tex			:3;		// Type extension bits
+		uint32 apx			:1;		// Extended access permissions enable
+		uint32 shared		:1;		// Is this page shared
+		uint32 nglobal		:1;		// Is this page NOT global
+		uint32 addr_base	:20;	// Physical base address
+	} bits;
+	uint32 val;
+} PACKED page_sld_t;
 
-#endif /* __common_h */
+void pages_init(){
+	//TODO: build page tables
+	//TODO: identity map all the memory
+	//TODO: enable paging
+}

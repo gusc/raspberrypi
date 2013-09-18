@@ -39,6 +39,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _start:
 	mov sp, #0x8000
+
+	ldr r4, =_bss_start
+	ldr r9, =_bss_end
+	mov r5, #0
+	mov r6, #0
+	mov r7, #0
+	mov r8, #0
+	b _bss_test
+
+_bss_clear:
+	stmia r4!, {r5-r8}
+
+_bss_test:
+	cmp r4, r9
+	blo _bss_clear
+
+_start_kmain:
     bl kmain		@ like a boss!
 
 _hang:

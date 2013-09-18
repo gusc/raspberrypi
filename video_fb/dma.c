@@ -1,12 +1,8 @@
 /*
 
-Common data types
-=================
+DMA driver
+==========
 
-This file contains type definitions and helper structures.
-
-The idea of this file is to keep a precise control over data type sizes, so 
-instead of int and long, we should have int32 or int64.
 
 License (BSD-2)
 ===============
@@ -36,52 +32,26 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-
-#ifndef __common_h
-#define __common_h
-
-#if defined _MSC_VER
-#define __attribute__(x)
-#endif
-
-#define NOINLINE		__attribute__((noinline))
-#define INLINE			__attribute__((always_inline))
-#define REGPARM			__attribute__((regparm(3)))
-#define NORETURN		__attribute__((noreturn))
-#define PACKED			__attribute__((packed))
-#define ALIGN(x)		__attribute__((aligned(x)))
-// type = IRQ, FIQ, SWI, ABORT and UNDEF.
-#define INTERRUPT(type)	__attribute__((interrupt(type)))
-
-#define HANG() while(true){}
-
-// Default types
-typedef unsigned char	uchar;
-
-typedef unsigned char	uint8;
-typedef unsigned short	uint16;
-typedef unsigned int	uint32;
-typedef unsigned long long uint64;
-
-typedef char			int8;
-typedef short			int16;
-typedef int				int32;
-typedef long long		int64;
-
-#define null 0
-#define true 1
-#define false 0
-#define bool uint64
-
-// Variadic funciton arguments
-#define va_list			__builtin_va_list
-#define va_start(v, f)	__builtin_va_start(v, f)
-#define va_end(v)		__builtin_va_end(v)
-#define va_arg(v, a)	__builtin_va_arg(v, a)
+#include "common.h"
+#include "dma.h"
 
 typedef struct {
-	uint32 low;
-	uint32 high;
-} split_uint64_t;
+	uint32 ti;			// Transfer information
+	uint32 src_addr;	// Source Address (bus address)
+	uint32 dst_addr;	// Destination Address (bus address)
+	uint32 tlen;		// Transfer length
+	uint32 stride;		// 2D mode stride
+	uint32 next_cb;		// Next control block address (bus address)
+	uint32 reserved1;
+	uint32 reserved2;
+} PACKED dma_cb_t;		// Always align to 32 byte (256 bit) boundary
 
-#endif /* __common_h */
+uint32 dma_count(){
+	return 16;
+}
+void dma_start(uint32 channel, uint32 src_addr, uint32 dst_addr, uint32 len){
+		
+}
+void dma_stop(uint32 channel){
+
+}

@@ -1,12 +1,9 @@
 /*
 
-Common data types
-=================
+Global configuration file
+=========================
 
-This file contains type definitions and helper structures.
-
-The idea of this file is to keep a precise control over data type sizes, so 
-instead of int and long, we should have int32 or int64.
+Contains configuration macros
 
 License (BSD-2)
 ===============
@@ -37,51 +34,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#ifndef __common_h
-#define __common_h
+#ifndef __config_h
+#define __config_h
 
-#if defined _MSC_VER
-#define __attribute__(x)
+// RPi configuration
+
+#define ORG_ADDR 0x8000		// Also a stack pointer
+#define MEM_SIZE 0x20000000	// 512MB for RPi Model B
+
+// Frame buffer configuration
+
+#define SCREEN_W 640
+#define SCREEN_H 480
+#define SCREEN_BPP 32	// 32bits per pixel, each pixel can be accessed as uint32
+#define BASE_COLOR 0xFFFFFF
+
 #endif
-
-#define NOINLINE		__attribute__((noinline))
-#define INLINE			__attribute__((always_inline))
-#define REGPARM			__attribute__((regparm(3)))
-#define NORETURN		__attribute__((noreturn))
-#define PACKED			__attribute__((packed))
-#define ALIGN(x)		__attribute__((aligned(x)))
-// type = IRQ, FIQ, SWI, ABORT and UNDEF.
-#define INTERRUPT(type)	__attribute__((interrupt(type)))
-
-#define HANG() while(true){}
-
-// Default types
-typedef unsigned char	uchar;
-
-typedef unsigned char	uint8;
-typedef unsigned short	uint16;
-typedef unsigned int	uint32;
-typedef unsigned long long uint64;
-
-typedef char			int8;
-typedef short			int16;
-typedef int				int32;
-typedef long long		int64;
-
-#define null 0
-#define true 1
-#define false 0
-#define bool uint64
-
-// Variadic funciton arguments
-#define va_list			__builtin_va_list
-#define va_start(v, f)	__builtin_va_start(v, f)
-#define va_end(v)		__builtin_va_end(v)
-#define va_arg(v, a)	__builtin_va_arg(v, a)
-
-typedef struct {
-	uint32 low;
-	uint32 high;
-} split_uint64_t;
-
-#endif /* __common_h */

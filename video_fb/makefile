@@ -2,7 +2,7 @@ AS = arm-linux-gnueabihf-as.exe
 LD = arm-linux-gnueabihf-ld.exe
 CC = arm-linux-gnueabihf-gcc.exe -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -mcpu=arm1176jzf-s
 OD = arm-linux-gnueabihf-objcopy.exe
-OBJECTS = start.s.o kmain.c.o
+OBJECTS = start.s.o pages.c.o heap.c.o dma.c.o fb.c.o kmain.c.o
 TARGET = kernel.img
 
 all: $(TARGET)
