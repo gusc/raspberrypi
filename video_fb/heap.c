@@ -36,8 +36,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common.h"
 #include "config.h"
 #include "heap.h"
+#include "lib.h"
 
 void heap_init(){
-	//TODO: initialize all the memory as one big heap
+	uint8 *start = (uint8 *)MEM_KBASE;
+	uint8 *end = (uint8 *)MEM_VBASE;
+	mem_fill(start, (end - start), 0);
+	//TODO: initialize kernel heap
 	//TODO: mark code regions as used and non freeable
 }
+void heap_reinitp(){
+	//TODO: re-initialize kernel heap with paging in mind
+}
+

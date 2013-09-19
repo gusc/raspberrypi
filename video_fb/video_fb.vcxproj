@@ -7,6 +7,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="lib.asm" />
     <None Include="start.asm" />
   </ItemGroup>
   <ItemGroup>
@@ -14,6 +15,7 @@
     <ClCompile Include="fb.c" />
     <ClCompile Include="heap.c" />
     <ClCompile Include="kmain.c" />
+    <ClCompile Include="lib.c" />
     <ClCompile Include="pages.c" />
   </ItemGroup>
   <ItemGroup>
@@ -22,7 +24,10 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="dma.h" />
     <ClInclude Include="fb.h" />
+    <ClInclude Include="font\vincent.h" />
+    <ClInclude Include="gcc.c" />
     <ClInclude Include="heap.h" />
+    <ClInclude Include="lib.h" />
     <ClInclude Include="mailbox.h" />
     <ClInclude Include="pages.h" />
     <ClInclude Include="rpi.h" />

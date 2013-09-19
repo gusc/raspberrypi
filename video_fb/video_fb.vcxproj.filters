@@ -18,6 +18,9 @@
     <None Include="start.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="lib.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kmain.c">
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,6 +68,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="font\vincent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gcc.c">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

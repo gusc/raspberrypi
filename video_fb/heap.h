@@ -36,6 +36,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __heap_h
 #define __heap_h
 
+/**
+* Initialize heap with physical addressing
+*/
 void heap_init();
+/**
+* Re-initialize heap with virtual addressing
+*/
+void heap_reinitp();
 
 #endif

@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "common.h"
+#include "config.h"
 #include "rpi.h"
 #include "arm.h"
 #include "pages.h"
@@ -44,7 +45,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "fb.h"
 
 void kmain(void){
-	pages_init();
 	heap_init();
+	pages_init();
+	heap_reinitp();
 	fb_init();
 }

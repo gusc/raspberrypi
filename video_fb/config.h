@@ -39,13 +39,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // RPi configuration
 
-#define ORG_ADDR 0x8000		// Also a stack pointer
-#define MEM_SIZE 0x20000000	// 512MB for RPi Model B
+#define MEM_ORG		0x00008000	// Code start and also a stack pointer
+#define MEM_SIZE	0x20000000	// Total ammount of RAM = 512MB for RPi Model B
+#define MEM_KBASE	0x1C000000	// Kernel data base address
+#define MEM_VBASE	0x1E000000	// VideoCore base address
+#define MEM_IOBASE	0x20000000	// IO base address
 
 // Frame buffer configuration
 
-#define SCREEN_W 640
-#define SCREEN_H 480
+#define SCREEN_W 1920
+#define SCREEN_H 1080
 #define SCREEN_BPP 32	// 32bits per pixel, each pixel can be accessed as uint32
 #define BASE_COLOR 0xFFFFFF
 

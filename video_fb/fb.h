@@ -5,6 +5,8 @@ Frame Buffer driver
 
 Some macros to help with colors
 
+TODO: make it double-buffered with DMA
+
 License (BSD-2)
 ===============
 
@@ -47,5 +49,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void fb_init();
 void fb_pixel(uint32 x, uint32 y, uint32 color);
 void fb_line(uint32 x, uint32 y, uint32 x2, uint32 y2, uint32 color);
+void fb_printf(uint32 x, uint32 y, const char *format, va_list args);
 
 #endif

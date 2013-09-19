@@ -1,8 +1,14 @@
 /*
 
-MMU Page manager
-================
+GCC helper library
+==================
 
+This file contains some missing instruction replacements for GCC on ARM.
+
+* signed integer division
+* signed integer modulo
+* unsigned integer division
+* unsigned integer modulo
 
 License (BSD-2)
 ===============
@@ -33,12 +39,61 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#ifndef __pages_h
-#define __pages_h
+#include "common.h"
 
-/**
-* Initialize paging
+/** 
+* GCC ARM divide for signed integer
+* @param base - base
+* @param divider - divider
+* @return quotient
 */
-void pages_init();
-
-#endif
+int32 __aeabi_idiv(int32 b, int32 d){
+	int32 s = (b & 0x80000000) ^ (d & 0x80000000);
+	int32 q = 0;
+	b &= 0x7FFFFFFF;
+	while (b >= d){
+		b -= d;
+		q ++;
+	}
+	return (q | s);
+}
+/** 
+* GCC ARM modulo for signed integer
+* @param base - base
+* @param divider - divider
+* @return quotient
+*/
+int32 __aeabi_idivmod(int32 b, int32 d){
+	int32 s = (b & 0x80000000) ^ (d & 0x80000000);
+	b &= 0x7FFFFFFF;
+	while (b >= d){
+		b -= d;
+	}
+	return (b | s);
+}
+/** 
+* GCC ARM divide for signed integer
+* @param base - base
+* @param divider - divider
+* @return quotient
+*/
+uint32 __aeabi_udiv(uint32 b, uint32 d){
+	uint32 q = 0;
+	while (b >= d){
+		b -= d;
+		q ++;
+	}
+	return q;
+}
+/** 
+* GCC ARM modulo for unsigned integer
+* @param base - base
+* @param divider - divider
+* @return quotient
+*/
+uint32 __aeabi_udivmod(int32 b, int32 d){
+	while (b >= d){
+		b -= d;
+	}
+	return b;
+}

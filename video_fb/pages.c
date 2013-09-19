@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common.h"
 #include "config.h"
 #include "pages.h"
+#include "lib.h"
 
 /**
 * Translation table base
@@ -76,8 +77,21 @@ typedef struct {
 	uint32 val;
 } PACKED page_sld_t;
 
+page_fld_t *ttbr0 ALIGN(0x4000);
+page_fld_t *ttbr1 ALIGN(0x4000);
+
 void pages_init(){
-	//TODO: build page tables
-	//TODO: identity map all the memory
+	uint32 i;
+	// Page tables go at the beginning of the kernel base memory
+	ttbr1 = (page_fld_t *)MEM_KBASE;
+	// We use N=2 on TTBR0, so it has to be only 4KB aligned
+	ttbr0 = (page_fld_t *)MEM_KBASE + 0x1000;
+	// Clear first level tables
+	mem_fill((uint8 *)MEM_KBASE, 0x2000, 0);
+	// So it seems that we can have 256 entries in each table
+	for (i = 0; i < 256; i ++){
+		//TODO: build page tables
+		//TODO: identity map all the memory	
+	}
 	//TODO: enable paging
 }

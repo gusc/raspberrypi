@@ -33,10 +33,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include "font\vincent.h"
+
 #include "common.h"
 #include "config.h"
 #include "fb.h"
 #include "mailbox.h"
+#include "lib.h"
 
 // Frame buffer info structure
 typedef struct {
@@ -87,5 +90,8 @@ void fb_pixel(uint32 x, uint32 y, uint32 color){
 	}
 }
 void fb_line(uint32 x, uint32 y, uint32 x2, uint32 y2, uint32 color){
+	
+}
+void fb_printf(uint32 x, uint32 y, const char *format, va_list args){
 	
 }
