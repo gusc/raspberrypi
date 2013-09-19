@@ -39,61 +39,72 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#include "common.h"
+typedef struct { int quot; int rem; } idiv_return;
+typedef struct { unsigned quot; unsigned rem; } uidiv_return;
 
 /** 
+* GCC ARM division and modulo for signed integer
+* @param n - numerator
+* @param d - denumerator
+* @return quotient and reminder
+*/
+idiv_return __aeabi_idivmod(int n, int d){
+	idiv_return ret = {0, 0};
+	// If one of them is 0 return 0
+	if (n == 0){
+		return ret;
+	} else if (d == 0){
+		// I know it's not correct for denumerator,
+		// it should rise some exception, but we can not do this now.
+		ret.rem = n;
+		return ret;
+	}
+	// Calculate sign for reminder
+	int sr = (n & 0x80000000);
+	// Calculate sign for quotient
+	int sq = sr ^ (d & 0x80000000);
+	// Remove sign from numerator
+	ret.rem &= n & 0x7FFFFFFF;
+	// Calculate division
+	while (ret.rem >= d){
+		ret.rem -= d;
+		ret.quot ++;
+	}
+	// Add signs
+	ret.quot |= sq;
+	ret.rem |= sr;
+	return ret;
+}
+/** 
+* GCC ARM division and modulo for unsigned integer
+* @param n - numerator
+* @param d - denumerator
+* @return quotient and reminder
+*/
+uidiv_return __aeabi_uidivmod(unsigned n, unsigned d){
+	uidiv_return ret = {0, 0};
+	// Calculate division
+	while (ret.rem >= d){
+		ret.rem -= d;
+		ret.quot ++;
+	}
+	return ret;
+}
+/** 
 * GCC ARM divide for signed integer
-* @param base - base
-* @param divider - divider
+* @param n - numerator
+* @param d - denominator
 * @return quotient
 */
-int32 __aeabi_idiv(int32 b, int32 d){
-	int32 s = (b & 0x80000000) ^ (d & 0x80000000);
-	int32 q = 0;
-	b &= 0x7FFFFFFF;
-	while (b >= d){
-		b -= d;
-		q ++;
-	}
-	return (q | s);
+int __aeabi_idiv(int n, int d){
+	return __aeabi_idivmod(n, d).quot;
 }
 /** 
-* GCC ARM modulo for signed integer
-* @param base - base
-* @param divider - divider
+* GCC ARM divide for unsigned integer
+* @param n - numerator
+* @param d - denominator
 * @return quotient
 */
-int32 __aeabi_idivmod(int32 b, int32 d){
-	int32 s = (b & 0x80000000) ^ (d & 0x80000000);
-	b &= 0x7FFFFFFF;
-	while (b >= d){
-		b -= d;
-	}
-	return (b | s);
-}
-/** 
-* GCC ARM divide for signed integer
-* @param base - base
-* @param divider - divider
-* @return quotient
-*/
-uint32 __aeabi_udiv(uint32 b, uint32 d){
-	uint32 q = 0;
-	while (b >= d){
-		b -= d;
-		q ++;
-	}
-	return q;
-}
-/** 
-* GCC ARM modulo for unsigned integer
-* @param base - base
-* @param divider - divider
-* @return quotient
-*/
-uint32 __aeabi_udivmod(int32 b, int32 d){
-	while (b >= d){
-		b -= d;
-	}
-	return b;
+unsigned __aeabi_uidiv(unsigned n, unsigned d){
+	return __aeabi_uidivmod(n, d).quot;
 }
